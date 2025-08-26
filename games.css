@@ -1,0 +1,131 @@
+/* Sfondo e layout generale */
+body {
+  font-family: 'Arial', sans-serif;
+  background: #f9f9f9;
+  margin: 0;
+}
+
+/* Header con nome dello store */
+header {
+  background: linear-gradient(to right, #007BFF, #FFD700);
+  color: white;
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Nome dello store */
+.store-name {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+/* Contenitore del saldo AleCoin */
+.saldo-container {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+/* Stile del saldo AleCoin */
+#aleCoinSaldo {
+  font-size: 18px;
+  font-weight: bold;
+  color: #FFD700;
+}
+
+/* Pulsanti */
+.recharge-button, .logout-button {
+  background: #FFD700;
+  color: black;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.recharge-button:hover {
+  background: #FFC107;
+}
+
+.logout-button {
+  background: #FF5733;
+}
+
+.logout-button:hover {
+  background: #E74C3C;
+}
+
+/* Galleria dei giochi */
+.game-gallery {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 20px;
+}
+
+/* Contenitore del gioco */
+.game-card {
+  background: white;
+  border-radius: 10px;
+  padding: auto;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: 200px; /* Dimensione uniforme per tutti */
+  height: auto; /* Altezza uniforme */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Immagini dei giochi */
+.game-card img {
+  width: auto;
+  height: auto;
+}
+
+/* Titoli dei giochi */
+.game-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  min-height: 40px; /* Altezza fissa per i titoli */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Pulsanti di acquisto */
+.game-card button {
+  background: #007BFF;
+  color: white;
+  border: none;
+  padding: 8px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.game-card button:hover {
+  background: #0056b3;
+}
+
+/* Footer con email */
+.footer {
+  background: #0D3B66;
+  color: white;
+  padding: 15px;
+  margin-top: 30px;
+  font-size: 16px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.footer a {
+  color: #FFD700;
+  text-decoration: none;
+  font-weight: bold;
+}

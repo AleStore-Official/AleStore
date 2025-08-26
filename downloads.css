@@ -1,0 +1,49 @@
+body {
+  font-family: 'Arial', sans-serif;
+  background: linear-gradient(to bottom, #4CAF50, #007BFF);
+  color: white;
+  margin: 0;
+}
+
+header {
+  background: #007BFF;
+  padding: 15px;
+  text-align: center;
+  font-size: 1.5rem;
+}
+
+button {
+  background: #FF5733;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #C70039;
+}
+
+.download-item {
+  background: white;
+  padding: 15px;
+  border-radius: 5px;
+  text-align: center;
+  margin: 10px auto;
+  width: 250px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.download-item h3 {
+  color: #007BFF;
+}
+
+.download-item button {
+  background: #007BFF;
+  color: white;
+  border: none;
+  padding: 8px;
+  border-radius: 5px;
+  cursor: pointer;
+}

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Redeem AleVoucher</title>
+  <link rel="stylesheet" href="alevoucher.css">
+  <script src="alevoucher.js" defer></script>
+  <style>
+    footer {
+      margin-top: 40px;
+      font-size: 14px;
+      color: #333;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>AleStore - Recharge AleCoin</h1>
+    <button onclick="logout()">Logout</button>
+  </header>
+  
+  <main>
+    <h2>Enter an AleVoucher code to receive 100 AleCoin</h2>
+    <form id="redeemForm">
+      <input type="text" id="voucher-code" maxlength="24" required placeholder="Enter 24-digit code">
+      <button type="submit">Redeem AleCoin</button>
+    </form>
+    <p id="redeem-message"></p>
+  </main>
+
+  <div style="text-align: center; margin-top: 30px;">
+    <a href="https://pollie.app/sxqch" class="buy-alecoin">Buy AleCoin</a>
+  </div>
+
+  <footer>
+    &copy; 2025 <strong>AleStore-Official</strong> — All rights reserved.
+  </footer>
+</body>
+</html>

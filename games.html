@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AleStore - Buy and Download Games</title>
+  <link rel="stylesheet" href="games.css">
+  <script src="games.js" defer></script>
+  <style>
+    footer {
+      margin-top: 40px;
+      font-size: 14px;
+      color: #333;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="store-name">AleStore - Games</div>
+    <div class="saldo-container">
+      <p>Balance: <span id="user-saldo">0</span> AleCoin</p>
+      <button id="saldo-button" class="recharge-button">Recharge AleCoin</button>
+      <button id="logoutButton" class="logout-button" onclick="logout()">Log Out</button>
+    </div>
+  </header>
+
+  <div class="game-gallery" id="game-gallery"></div>
+
+  <footer class="footer">
+    <p>&copy; 2025 <strong>AleStore-Official</strong> — All rights reserved.</p>
+  </footer>
+
+</body>
+</html>
