@@ -5,13 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AleStore - Buy and Download Games</title>
   <link rel="stylesheet" href="games.css">
+  <script src="games.js" defer></script>
   <style>
-    .game-card {
-      border: 1px solid #ccc;
-      padding: 12px;
-      margin: 10px;
-      border-radius: 6px;
-    }
     footer {
       margin-top: 40px;
       font-size: 14px;
@@ -21,76 +16,20 @@
   </style>
 </head>
 <body>
+
   <header>
     <div class="store-name">AleStore - Games</div>
     <div class="saldo-container">
       <p>Balance: <span id="user-saldo">0</span> AleCoin</p>
-      <button onclick="recharge()">Recharge AleCoin</button>
+      <button id="saldo-button" class="recharge-button">Recharge AleCoin</button>
     </div>
   </header>
 
   <div class="game-gallery" id="game-gallery"></div>
 
-  <footer>
-    &copy; 2025 <strong>AleStore-Official</strong> — All rights reserved.
+  <footer class="footer">
+    <p>&copy; 2025 <strong>AleStore-Official</strong> — All rights reserved.</p>
   </footer>
 
-  <script src="https://alestore-official.github.io/AleCAPTCHA/control.js"></script>
-  <script>
-    const saldoEl = document.getElementById("user-saldo");
-    const gallery = document.getElementById("game-gallery");
-
-    function getSaldo() {
-      return parseFloat(localStorage.getItem("userSaldo") || "0");
-    }
-
-    function setSaldo(val) {
-      localStorage.setItem("userSaldo", val.toFixed(2));
-      saldoEl.textContent = val.toFixed(2);
-    }
-
-    function recharge() {
-      const nuovo = getSaldo() + 100;
-      setSaldo(nuovo);
-      alert("✅ 100 AleCoin aggiunti!");
-    }
-
-    function acquista(nome, prezzo) {
-      const saldo = getSaldo();
-      if (saldo < prezzo) {
-        alert("❌ Saldo insufficiente.");
-        return;
-      }
-
-      const giochi = JSON.parse(localStorage.getItem("giochi_comprati") || "[]");
-      giochi.push({ nome, prezzo, data: new Date().toISOString() });
-      localStorage.setItem("giochi_comprati", JSON.stringify(giochi));
-
-      setSaldo(saldo - prezzo);
-      alert(`✅ Acquisto completato: ${nome}`);
-    }
-
-    function mostraGiochi() {
-      const giochi = [
-        { nome: "Pixel Racer", prezzo: 5 },
-        { nome: "Mystic Quest", prezzo: 8 },
-        { nome: "Sky Defender", prezzo: 3 }
-      ];
-
-      giochi.forEach(({ nome, prezzo }) => {
-        const card = document.createElement("div");
-        card.className = "game-card";
-        card.innerHTML = `
-          <h3>${nome}</h3>
-          <p>Price: ${prezzo} AleCoin</p>
-          <button onclick="acquista('${nome}', ${prezzo})">Buy</button>
-        `;
-        gallery.appendChild(card);
-      });
-    }
-
-    setSaldo(getSaldo());
-    mostraGiochi();
-  </script>
 </body>
 </html>
