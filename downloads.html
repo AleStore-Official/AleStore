@@ -5,14 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Download Games - AleStore</title>
   <link rel="stylesheet" href="downloads.css">
+  <script src="downloads.js" defer></script>
   <style>
-    .game-item {
-      background-color: #f9f9f9;
-      border: 1px solid #ccc;
-      padding: 12px;
-      margin-bottom: 10px;
-      border-radius: 6px;
-    }
     footer {
       margin-top: 40px;
       font-size: 14px;
@@ -23,38 +17,15 @@
 </head>
 <body>
   <header>
-    <h1>AleStore - Your Library</h1>
-  </header>
 
   <main>
     <h2>Purchased Games</h2>
-    <div id="downloads-list">Loading...</div>
+    <div id="downloads-list"></div>
   </main>
 
   <footer>
     &copy; 2025 <strong>AleStore-Official</strong> — All rights reserved.
   </footer>
-
-  <script src="https://alestore-official.github.io/AleCAPTCHA/control.js"></script>
-  <script>
-    const container = document.getElementById("downloads-list");
-    const giochi = JSON.parse(localStorage.getItem("giochi_comprati") || "[]");
-
-    if (giochi.length === 0) {
-      container.innerHTML = "<p>You haven't purchased any games yet.</p>";
-    } else {
-      container.innerHTML = "";
-      giochi.forEach(({ nome, prezzo, data }) => {
-        const item = document.createElement("div");
-        item.className = "game-item";
-        item.innerHTML = `
-          <strong>${nome}</strong><br>
-          Price: ${prezzo} AleCoin<br>
-          Purchased on: ${new Date(data).toLocaleDateString()}
-        `;
-        container.appendChild(item);
-      });
-    }
-  </script>
 </body>
+<script src="https://alestore-official.github.io/AleCAPTCHA/control.js"></script>
 </html>
