@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AleStore - Buy and Download Games</title>
   <link rel="stylesheet" href="games.css">
-  <script src="games.js" defer></script>
   <style>
     footer {
       margin-top: 40px;
@@ -16,7 +15,6 @@
   </style>
 </head>
 <body>
-
   <header>
     <div class="store-name">AleStore - Games</div>
     <div class="saldo-container">
@@ -30,6 +28,86 @@
   <footer class="footer">
     <p>&copy; 2025 <strong>AleStore-Official</strong> — All rights reserved.</p>
   </footer>
-  </body>
+
   <script src="https://alestore-official.github.io/AleCAPTCHA/control.js"></script>
+  <script type="module">
+    import { createClient } from 'https://esm.sh/@supabase/supabase-js';
+
+    const supabase = createClient(
+      'https://hsyyrcbibohwvbuwxwok.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF4eHFweWd6dnd0dGp0YWV6ZWdyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjEwNjAwMDEsImV4cCI6MjA3NjYzNjAwMX0.xPt34HCf7FmooneMFdhAkt2wDSqHFVtYrlJTL9rPAZI'
+    );
+
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+      alert("Accesso richiesto. Verrai reindirizzato.");
+      location.href = "AleLogin.html";
+    }
+
+    const saldoEl = document.getElementById("user-saldo");
+    const gallery = document.getElementById("game-gallery");
+
+    async function fetchSaldo() {
+      const { data } = await supabase
+        .from("utenti_alestore")
+        .select("saldo")
+        .eq("user_id", user.id)
+        .single();
+
+      saldoEl.textContent = data?.saldo?.toFixed(2) || "0";
+    }
+
+    async function acquistaGioco(nome, prezzo) {
+      const { data: saldoData } = await supabase
+        .from("utenti_alestore")
+        .select("saldo")
+        .eq("user_id", user.id)
+        .single();
+
+      const saldo = saldoData?.saldo || 0;
+      if (saldo < prezzo) {
+        alert("❌ Saldo insufficiente.");
+        return;
+      }
+
+      await supabase.from("giochi_comprati").insert({
+        user_id: user.id,
+        gioco: nome,
+        prezzo: prezzo,
+        data: new Date().toISOString()
+      });
+
+      await supabase
+        .from("utenti_alestore")
+        .update({ saldo: saldo - prezzo })
+        .eq("user_id", user.id);
+
+      alert(`✅ Acquisto completato: ${nome}`);
+      await fetchSaldo();
+    }
+
+    function mostraGiochi() {
+      const giochi = [
+        { nome: "Pixel Racer", prezzo: 5 },
+        { nome: "Mystic Quest", prezzo: 8 },
+        { nome: "Sky Defender", prezzo: 3 }
+      ];
+
+      giochi.forEach(({ nome, prezzo }) => {
+        const card = document.createElement("div");
+        card.className = "game-card";
+        card.innerHTML = `
+          <h3>${nome}</h3>
+          <p>Price: ${prezzo} AleCoin</p>
+          <button onclick="acquistaGioco('${nome}', ${prezzo})">Buy</button>
+        `;
+        gallery.appendChild(card);
+      });
+    }
+
+    window.acquistaGioco = acquistaGioco;
+    await fetchSaldo();
+    mostraGiochi();
+  </script>
+</body>
 </html>
