@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Download Games - AleStore</title>
   <link rel="stylesheet" href="downloads.css">
-  <script src="downloads.js" defer></script>
   <style>
     footer {
       margin-top: 40px;
@@ -13,19 +12,67 @@
       color: #333;
       text-align: center;
     }
+    .game-item {
+      background-color: #f9f9f9;
+      border: 1px solid #ccc;
+      padding: 12px;
+      margin-bottom: 10px;
+      border-radius: 6px;
+    }
   </style>
 </head>
 <body>
   <header>
+    <h1>AleStore - Your Library</h1>
+  </header>
 
   <main>
     <h2>Purchased Games</h2>
-    <div id="downloads-list"></div>
+    <div id="downloads-list">Loading...</div>
   </main>
 
   <footer>
     &copy; 2025 <strong>AleStore-Official</strong> — All rights reserved.
   </footer>
+
+  <script src="https://alestore-official.github.io/AleCAPTCHA/control.js"></script>
+  <script type="module">
+    import { createClient } from 'https://esm.sh/@supabase/supabase-js';
+
+    const supabase = createClient(
+      'https://hsyyrcbibohwvbuwxwok.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF4eHFweWd6dnd0dGp0YWV6ZWdyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjEwNjAwMDEsImV4cCI6MjA3NjYzNjAwMX0.xPt34HCf7FmooneMFdhAkt2wDSqHFVtYrlJTL9rPAZI'
+    );
+
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+      alert("Accesso richiesto.");
+      location.href = "AleLogin.html";
+    }
+
+    const container = document.getElementById("downloads-list");
+
+    const { data: giochi } = await supabase
+      .from("giochi_comprati")
+      .select("gioco, prezzo, data")
+      .eq("user_id", user.id)
+      .order("data", { ascending: false });
+
+    if (!giochi || giochi.length === 0) {
+      container.innerHTML = "<p>You haven't purchased any games yet.</p>";
+    } else {
+      container.innerHTML = "";
+      giochi.forEach(({ gioco, prezzo, data }) => {
+        const item = document.createElement("div");
+        item.className = "game-item";
+        item.innerHTML = `
+          <strong>${gioco}</strong><br>
+          Price: ${prezzo} AleCoin<br>
+          Purchased on: ${new Date(data).toLocaleDateString()}
+        `;
+        container.appendChild(item);
+      });
+    }
+  </script>
 </body>
-<script src="https://alestore-official.github.io/AleCAPTCHA/control.js"></script>
 </html>
