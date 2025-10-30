@@ -6,18 +6,18 @@
   <title>Download Games - AleStore</title>
   <link rel="stylesheet" href="downloads.css">
   <style>
-    footer {
-      margin-top: 40px;
-      font-size: 14px;
-      color: #333;
-      text-align: center;
-    }
     .game-item {
       background-color: #f9f9f9;
       border: 1px solid #ccc;
       padding: 12px;
       margin-bottom: 10px;
       border-radius: 6px;
+    }
+    footer {
+      margin-top: 40px;
+      font-size: 14px;
+      color: #333;
+      text-align: center;
     }
   </style>
 </head>
@@ -36,37 +36,19 @@
   </footer>
 
   <script src="https://alestore-official.github.io/AleCAPTCHA/control.js"></script>
-  <script type="module">
-    import { createClient } from 'https://esm.sh/@supabase/supabase-js';
-
-    const supabase = createClient(
-      'https://hsyyrcbibohwvbuwxwok.supabase.co',
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF4eHFweWd6dnd0dGp0YWV6ZWdyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjEwNjAwMDEsImV4cCI6MjA3NjYzNjAwMX0.xPt34HCf7FmooneMFdhAkt2wDSqHFVtYrlJTL9rPAZI'
-    );
-
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) {
-      alert("Accesso richiesto.");
-      location.href = "AleLogin.html";
-    }
-
+  <script>
     const container = document.getElementById("downloads-list");
+    const giochi = JSON.parse(localStorage.getItem("giochi_comprati") || "[]");
 
-    const { data: giochi } = await supabase
-      .from("giochi_comprati")
-      .select("gioco, prezzo, data")
-      .eq("user_id", user.id)
-      .order("data", { ascending: false });
-
-    if (!giochi || giochi.length === 0) {
+    if (giochi.length === 0) {
       container.innerHTML = "<p>You haven't purchased any games yet.</p>";
     } else {
       container.innerHTML = "";
-      giochi.forEach(({ gioco, prezzo, data }) => {
+      giochi.forEach(({ nome, prezzo, data }) => {
         const item = document.createElement("div");
         item.className = "game-item";
         item.innerHTML = `
-          <strong>${gioco}</strong><br>
+          <strong>${nome}</strong><br>
           Price: ${prezzo} AleCoin<br>
           Purchased on: ${new Date(data).toLocaleDateString()}
         `;
