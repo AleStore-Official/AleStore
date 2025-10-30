@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Redeem AleVoucher</title>
   <link rel="stylesheet" href="alevoucher.css">
+  <script src="alevoucher.js" defer></script>
   <style>
     footer {
       margin-top: 40px;
@@ -17,8 +18,9 @@
 <body>
   <header>
     <h1>AleStore - Recharge AleCoin</h1>
+    <button onclick="logout()">Logout</button>
   </header>
-
+  
   <main>
     <h2>Enter an AleVoucher code to receive 100 AleCoin</h2>
     <form id="redeemForm">
@@ -31,36 +33,6 @@
   <footer>
     &copy; 2025 <strong>AleStore-Official</strong> — All rights reserved.
   </footer>
-
-  <script src="https://alestore-official.github.io/AleCAPTCHA/control.js"></script>
-  <script>
-    const usedCodes = JSON.parse(localStorage.getItem("usedVouchers") || "[]");
-
-    document.getElementById("redeemForm").addEventListener("submit", function (e) {
-      e.preventDefault();
-      const code = document.getElementById("voucher-code").value.trim();
-      const message = document.getElementById("redeem-message");
-
-      if (code.length !== 24) {
-        message.textContent = "❌ Invalid code format.";
-        return;
-      }
-
-      if (usedCodes.includes(code)) {
-        message.textContent = "⚠️ This code has already been redeemed.";
-        return;
-      }
-
-      const saldo = parseFloat(localStorage.getItem("userSaldo") || "0");
-      const nuovoSaldo = saldo + 100;
-      localStorage.setItem("userSaldo", nuovoSaldo.toFixed(2));
-
-      usedCodes.push(code);
-      localStorage.setItem("usedVouchers", JSON.stringify(usedCodes));
-
-      message.textContent = "✅ Voucher redeemed! 100 AleCoin added.";
-      document.getElementById("voucher-code").value = "";
-    });
-  </script>
 </body>
+<script src="https://alestore-official.github.io/AleCAPTCHA/control.js"></script>
 </html>
