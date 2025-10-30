@@ -4,14 +4,37 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>AleStore</title>
-  <script>
-    // Inizializza saldo se non esiste
-    if (!localStorage.getItem("userSaldo")) {
-      localStorage.setItem("userSaldo", 0);
+  <script type="module">
+    import { createClient } from 'https://esm.sh/@supabase/supabase-js';
+
+    const supabase = createClient(
+      'https://hsyyrcbibohwvbuwxwok.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF4eHFweWd6dnd0dGp0YWV6ZWdyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjEwNjAwMDEsImV4cCI6MjA3NjYzNjAwMX0.xPt34HCf7FmooneMFdhAkt2wDSqHFVtYrlJTL9rPAZI'
+    );
+
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+      alert("Accesso richiesto. Verrai reindirizzato.");
+      location.href = "AleLogin.html";
     }
+
+    const { data: saldoRecord } = await supabase
+      .from("utenti_alestore")
+      .select("saldo")
+      .eq("user_id", user.id)
+      .single();
+
+    if (!saldoRecord) {
+      await supabase.from("utenti_alestore").insert({
+        user_id: user.id,
+        saldo: 0
+      });
+    }
+
     window.location.href = "games.html";
   </script>
 </head>
+<body>
+  <script src="https://alestore-official.github.io/AleCAPTCHA/control.js"></script>
 </body>
-<script src="https://alestore-official.github.io/AleCAPTCHA/control.js"></script>
 </html>
