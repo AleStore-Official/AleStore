@@ -17,7 +17,6 @@
 <body>
   <header>
     <h1>AleStore - Recharge AleCoin</h1>
-    <button onclick="logout()">Logout</button>
   </header>
 
   <main>
@@ -34,21 +33,10 @@
   </footer>
 
   <script src="https://alestore-official.github.io/AleCAPTCHA/control.js"></script>
-  <script type="module">
-    import { createClient } from 'https://esm.sh/@supabase/supabase-js';
+  <script>
+    const usedCodes = JSON.parse(localStorage.getItem("usedVouchers") || "[]");
 
-    const supabase = createClient(
-      'https://hsyyrcbibohwvbuwxwok.supabase.co',
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF4eHFweWd6dnd0dGp0YWV6ZWdyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjEwNjAwMDEsImV4cCI6MjA3NjYzNjAwMX0.xPt34HCf7FmooneMFdhAkt2wDSqHFVtYrlJTL9rPAZI'
-    );
-
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) {
-      alert("Accesso richiesto.");
-      location.href = "AleLogin.html";
-    }
-
-    document.getElementById("redeemForm").addEventListener("submit", async (e) => {
+    document.getElementById("redeemForm").addEventListener("submit", function (e) {
       e.preventDefault();
       const code = document.getElementById("voucher-code").value.trim();
       const message = document.getElementById("redeem-message");
@@ -58,48 +46,21 @@
         return;
       }
 
-      const { data: voucher } = await supabase
-        .from("alevoucher")
-        .select("*")
-        .eq("codice", code)
-        .single();
-
-      if (!voucher) {
-        message.textContent = "❌ Code not found.";
-        return;
-      }
-
-      if (voucher.usato) {
+      if (usedCodes.includes(code)) {
         message.textContent = "⚠️ This code has already been redeemed.";
         return;
       }
 
-      const { data: saldoData } = await supabase
-        .from("utenti_alestore")
-        .select("saldo")
-        .eq("user_id", user.id)
-        .single();
+      const saldo = parseFloat(localStorage.getItem("userSaldo") || "0");
+      const nuovoSaldo = saldo + 100;
+      localStorage.setItem("userSaldo", nuovoSaldo.toFixed(2));
 
-      const nuovoSaldo = (saldoData?.saldo || 0) + 100;
-
-      await supabase
-        .from("utenti_alestore")
-        .update({ saldo: nuovoSaldo })
-        .eq("user_id", user.id);
-
-      await supabase
-        .from("alevoucher")
-        .update({ usato: true, user_id: user.id, data_utilizzo: new Date().toISOString() })
-        .eq("codice", code);
+      usedCodes.push(code);
+      localStorage.setItem("usedVouchers", JSON.stringify(usedCodes));
 
       message.textContent = "✅ Voucher redeemed! 100 AleCoin added.";
       document.getElementById("voucher-code").value = "";
     });
-
-    window.logout = async function () {
-      await supabase.auth.signOut();
-      location.href = "AleLogin.html";
-    };
   </script>
 </body>
 </html>
