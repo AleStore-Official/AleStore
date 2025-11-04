@@ -4,10 +4,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>AleStore</title>
-  <script>
+  <script type="module">
+    import { blockIfUnauthorized } from 'https://alestore-official.github.io/AleRegister/access.js';
+    blockIfUnauthorized();
+
     if (!localStorage.getItem("userSaldo")) {
       localStorage.setItem("userSaldo", "0");
     }
+
     window.location.href = "games.html";
   </script>
 </head>
