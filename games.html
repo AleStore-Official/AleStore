@@ -30,6 +30,11 @@
   <footer class="footer">
     <p>&copy; 2025 <strong>AleStore-Official</strong> — All rights reserved.</p>
   </footer>
-  </body>
+
+  <script type="module">
+    import { blockIfUnauthorized } from 'https://alestore-official.github.io/AleRegister/access.js';
+    blockIfUnauthorized();
+  </script>
   <script src="https://alestore-official.github.io/AleCAPTCHA/control.js"></script>
+</body>
 </html>
