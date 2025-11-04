@@ -13,12 +13,35 @@
       color: #333;
       text-align: center;
     }
+
+    .purchase-button {
+      margin-top: 20px;
+      background-color: #0047AB;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .purchase-button:hover {
+      background-color: #003b91;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    header h1 {
+      color: #0047AB;
+    }
   </style>
 </head>
 <body>
   <header>
     <h1>AleStore - Recharge AleCoin</h1>
-    <button onclick="logout()">Logout</button>
   </header>
   
   <main>
@@ -32,7 +55,16 @@
 
   <footer>
     &copy; 2025 <strong>AleStore-Official</strong> — All rights reserved.
+    <br>
+    <button class="purchase-button" onclick="window.location.href='mailto:alestore.delegate549@passinbox.com'">
+      Per acquistare AleCoin scrivere a alestore.delegate549@passinbox.com
+    </button>
   </footer>
+
+  <script type="module">
+    import { blockIfUnauthorized } from 'https://alestore-official.github.io/AleRegister/access.js';
+    blockIfUnauthorized();
+  </script>
+  <script src="https://alestore-official.github.io/AleCAPTCHA/control.js"></script>
 </body>
-<script src="https://alestore-official.github.io/AleCAPTCHA/control.js"></script>
 </html>
