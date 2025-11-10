@@ -7,21 +7,82 @@
   <link rel="stylesheet" href="games.css">
   <script src="games.js" defer></script>
   <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to bottom right, #FFCCCB, #FFDAB9, #98FB98, #87CEEB);
+      margin: 0;
+      padding: 0;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    body.dark {
+      background: #1e1e1e;
+      color: #f0f0f0;
+    }
+
+    #themeToggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      font-size: 20px;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+
+    header {
+      text-align: center;
+      padding: 20px;
+    }
+
+    .store-name {
+      font-size: 24px;
+      color: #0047AB;
+      margin-bottom: 10px;
+    }
+
+    .saldo-container {
+      font-size: 16px;
+    }
+
+    .recharge-button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .recharge-button:hover {
+      background-color: #45a049;
+    }
+
+    .game-gallery {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      padding: 20px;
+    }
+
     footer {
       margin-top: 40px;
       font-size: 14px;
-      color: #333;
       text-align: center;
     }
   </style>
 </head>
 <body>
+  <button id="themeToggle" title="Toggle theme">🌙</button>
 
   <header>
     <div class="store-name">AleStore - Games</div>
     <div class="saldo-container">
+      <p id="welcome">Benvenuto!</p>
       <p>Balance: <span id="user-saldo">0</span> AleCoin</p>
-      <button id="saldo-button" class="recharge-button">Recharge AleCoin</button>
+      <button id="saldo-button" class="recharge-button" onclick="location.href='/AlePortal/App_voucher.html'">Recharge AleCoin</button>
     </div>
   </header>
 
@@ -33,7 +94,46 @@
 
   <script type="module">
     import { blockIfUnauthorized } from 'https://alestore-official.github.io/AleRegister/access.js';
+    import { createClient } from 'https://esm.sh/@supabase/supabase-js';
+
     blockIfUnauthorized();
+
+    const supabase = createClient(
+      'https://hsyyrcbibohwvbuwxwok.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhzeXlyY2JpYm9od3ZidXd4d29rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjEwNjE0MDcsImV4cCI6MjA3NjYzNzQwN30.2KsFsGYjwf_cA7Z9oglVthiaE1_jWYuQ6HMMm5UXsyo'
+    );
+
+    const welcome = document.getElementById("welcome");
+    const saldo = document.getElementById("user-saldo");
+
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+      location.href = "https://alestore-official.github.io/AleLogin";
+    } else {
+      const { data: profile } = await supabase
+        .from("utenti")
+        .select("firstName,lastName,saldo")
+        .eq("email", user.email)
+        .single();
+      welcome.textContent = `Benvenuto ${profile?.firstName || ''} ${profile?.lastName || ''}!`;
+      saldo.textContent = profile?.saldo || 0;
+    }
+  </script>
+
+  <script>
+    const toggle = document.getElementById("themeToggle");
+    const currentTheme = localStorage.getItem("alegames-theme");
+    if (currentTheme === "dark") {
+      document.body.classList.add("dark");
+      toggle.textContent = "☀️";
+    }
+
+    toggle.onclick = () => {
+      document.body.classList.toggle("dark");
+      const theme = document.body.classList.contains("dark") ? "dark" : "light";
+      localStorage.setItem("alegames-theme", theme);
+      toggle.textContent = theme === "dark" ? "☀️" : "🌙";
+    };
   </script>
   <script src="https://alestore-official.github.io/AleCAPTCHA/control.js"></script>
 </body>
