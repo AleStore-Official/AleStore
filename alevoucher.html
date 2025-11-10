@@ -7,6 +7,84 @@
   <link rel="stylesheet" href="alevoucher.css">
   <script src="alevoucher.js" defer></script>
   <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to bottom right, #FFCCCB, #FFDAB9, #98FB98, #87CEEB);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    body.dark {
+      background: #1e1e1e;
+      color: #f0f0f0;
+    }
+
+    #themeToggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      font-size: 20px;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    header h1 {
+      color: #0047AB;
+    }
+
+    main {
+      text-align: center;
+      background-color: white;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      width: 320px;
+    }
+
+    body.dark main {
+      background-color: #2c2c2c;
+      color: #f0f0f0;
+    }
+
+    form input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      text-align: center;
+    }
+
+    form button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    form button:hover {
+      background-color: #45a049;
+    }
+
+    #redeem-message {
+      margin-top: 15px;
+      font-weight: bold;
+    }
+
     footer {
       margin-top: 40px;
       font-size: 14px;
@@ -28,23 +106,17 @@
     .purchase-button:hover {
       background-color: #003b91;
     }
-
-    header {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-
-    header h1 {
-      color: #0047AB;
-    }
   </style>
 </head>
 <body>
+  <button id="themeToggle" title="Toggle theme">🌙</button>
+
   <header>
     <h1>AleStore - Recharge AleCoin</h1>
   </header>
-  
+
   <main>
+    <p id="welcome">Benvenuto!</p>
     <h2>Enter an AleVoucher code to receive 100 AleCoin</h2>
     <form id="redeemForm">
       <input type="text" id="voucher-code" maxlength="24" required placeholder="Enter 24-digit code">
@@ -57,13 +129,50 @@
     &copy; 2025 <strong>AleStore-Official</strong> — All rights reserved.
     <br>
     <button class="purchase-button" onclick="window.location.href='mailto:alestore.delegate549@passinbox.com'">
-To purchase AleCoin, write to alestore.delegate549@passinbox.com
+      To purchase AleCoin, write to alestore.delegate549@passinbox.com
     </button>
   </footer>
 
   <script type="module">
     import { blockIfUnauthorized } from 'https://alestore-official.github.io/AleRegister/access.js';
+    import { createClient } from 'https://esm.sh/@supabase/supabase-js';
+
     blockIfUnauthorized();
+
+    const supabase = createClient(
+      'https://hsyyrcbibohwvbuwxwok.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhzeXlyY2JpYm9od3ZidXd4d29rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjEwNjE0MDcsImV4cCI6MjA3NjYzNzQwN30.2KsFsGYjwf_cA7Z9oglVthiaE1_jWYuQ6HMMm5UXsyo'
+    );
+
+    const welcome = document.getElementById("welcome");
+
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+      location.href = "https://alestore-official.github.io/AleLogin";
+    } else {
+      const { data: profile } = await supabase
+        .from("utenti")
+        .select("firstName,lastName")
+        .eq("email", user.email)
+        .single();
+      welcome.textContent = `Benvenuto ${profile?.firstName || ''} ${profile?.lastName || ''}!`;
+    }
+  </script>
+
+  <script>
+    const toggle = document.getElementById("themeToggle");
+    const currentTheme = localStorage.getItem("alevoucher-theme");
+    if (currentTheme === "dark") {
+      document.body.classList.add("dark");
+      toggle.textContent = "☀️";
+    }
+
+    toggle.onclick = () => {
+      document.body.classList.toggle("dark");
+      const theme = document.body.classList.contains("dark") ? "dark" : "light";
+      localStorage.setItem("alevoucher-theme", theme);
+      toggle.textContent = theme === "dark" ? "☀️" : "🌙";
+    };
   </script>
   <script src="https://alestore-official.github.io/AleCAPTCHA/control.js"></script>
 </body>
