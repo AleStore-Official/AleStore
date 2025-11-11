@@ -1,131 +1,65 @@
-/* Sfondo e layout generale */
 body {
-  font-family: 'Arial', sans-serif;
-  background: #f9f9f9;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(to bottom right, #FFCCCB, #FFDAB9, #98FB98, #87CEEB);
   margin: 0;
+  padding: 0;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
-/* Header con nome dello store */
-header {
-  background: linear-gradient(to right, #007BFF, #FFD700);
-  color: white;
-  padding: 15px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+body.dark {
+  background: #1e1e1e;
+  color: #f0f0f0;
 }
 
-/* Nome dello store */
-.store-name {
-  font-size: 1.5rem;
-  font-weight: bold;
-}
-
-/* Contenitore del saldo AleCoin */
-.saldo-container {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-}
-
-/* Stile del saldo AleCoin */
-#aleCoinSaldo {
-  font-size: 18px;
-  font-weight: bold;
-  color: #FFD700;
-}
-
-/* Pulsanti */
-.recharge-button, .logout-button {
-  background: #FFD700;
-  color: black;
-  font-size: 16px;
-  font-weight: bold;
-  padding: 10px 15px;
-  border-radius: 5px;
+#themeToggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  font-size: 20px;
+  background: none;
+  border: none;
   cursor: pointer;
-  transition: background 0.3s ease;
 }
 
-.recharge-button:hover {
-  background: #FFC107;
-}
-
-.logout-button {
-  background: #FF5733;
-}
-
-.logout-button:hover {
-  background: #E74C3C;
-}
-
-/* Galleria dei giochi */
-.game-gallery {
-  display: flex;
-  gap: 20px;
-  justify-content: center;
-  flex-wrap: wrap;
+header {
+  text-align: center;
   padding: 20px;
 }
 
-/* Contenitore del gioco */
-.game-card {
-  background: white;
-  border-radius: 10px;
-  padding: auto;
-  text-align: center;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  width: 200px; /* Dimensione uniforme per tutti */
-  height: auto; /* Altezza uniforme */
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+.store-name {
+  font-size: 24px;
+  color: #0047AB;
+  margin-bottom: 10px;
 }
 
-/* Immagini dei giochi */
-.game-card img {
-  width: auto;
-  height: auto;
+.saldo-container {
+  font-size: 16px;
 }
 
-/* Titoli dei giochi */
-.game-title {
-  font-size: 18px;
-  font-weight: bold;
-  color: #333;
-  min-height: 40px; /* Altezza fissa per i titoli */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Pulsanti di acquisto */
-.game-card button {
-  background: #007BFF;
+.recharge-button {
+  background-color: #4CAF50;
   color: white;
+  padding: 8px 16px;
   border: none;
-  padding: 8px;
   border-radius: 5px;
   cursor: pointer;
+  margin-top: 10px;
 }
 
-.game-card button:hover {
-  background: #0056b3;
+.recharge-button:hover {
+  background-color: #45a049;
 }
 
-/* Footer con email */
-.footer {
-  background: #0D3B66;
-  color: white;
-  padding: 15px;
-  margin-top: 30px;
-  font-size: 16px;
-  border-radius: 10px;
+.game-gallery {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  padding: 20px;
+}
+
+footer {
+  margin-top: 40px;
+  font-size: 14px;
   text-align: center;
-}
-
-.footer a {
-  color: #FFD700;
-  text-decoration: none;
-  font-weight: bold;
 }
