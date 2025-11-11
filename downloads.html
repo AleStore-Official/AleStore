@@ -6,77 +6,6 @@
   <title>Download Games - AleStore</title>
   <link rel="stylesheet" href="downloads.css">
   <script src="downloads.js" defer></script>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: linear-gradient(to bottom right, #FFCCCB, #FFDAB9, #98FB98, #87CEEB);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      min-height: 100vh;
-      margin: 0;
-      transition: background 0.3s ease, color 0.3s ease;
-    }
-
-    body.dark {
-      background: #1e1e1e;
-      color: #f0f0f0;
-    }
-
-    #themeToggle {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      font-size: 20px;
-      background: none;
-      border: none;
-      cursor: pointer;
-    }
-
-    header {
-      text-align: center;
-      margin: 40px 0 20px;
-    }
-
-    header h1 {
-      color: #0047AB;
-    }
-
-    main {
-      text-align: center;
-      background-color: white;
-      padding: 40px;
-      border-radius: 12px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      width: 320px;
-    }
-
-    body.dark main {
-      background-color: #2c2c2c;
-      color: #f0f0f0;
-    }
-
-    main h2 {
-      margin-bottom: 10px;
-    }
-
-    #welcome {
-      margin-bottom: 20px;
-      font-size: 16px;
-    }
-
-    #downloads-list {
-      margin-top: 20px;
-      text-align: left;
-    }
-
-    footer {
-      margin-top: 40px;
-      font-size: 14px;
-      text-align: center;
-    }
-  </style>
 </head>
 <body>
   <button id="themeToggle" title="Toggle theme">🌙</button>
@@ -86,7 +15,6 @@
   </header>
 
   <main>
-    <p id="welcome">Benvenuto!</p>
     <h2>Purchased Games</h2>
     <div id="downloads-list"></div>
   </main>
@@ -103,21 +31,12 @@
 
     const supabase = createClient(
       'https://hsyyrcbibohwvbuwxwok.supabase.co',
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhzeXlyY2JpYm9od3ZidXd4d29rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjEwNjE0MDcsImV4cCI6MjA3NjYzNzQwN30.2KsFsGYjwf_cA7Z9oglVthiaE1_jWYuQ6HMMm5UXsyo'
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
     );
-
-    const welcome = document.getElementById("welcome");
 
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) {
       location.href = "https://alestore-official.github.io/AleLogin";
-    } else {
-      const { data: profile } = await supabase
-        .from("utenti")
-        .select("firstName,lastName")
-        .eq("email", user.email)
-        .single();
-      welcome.textContent = `Benvenuto ${profile?.firstName || ''} ${profile?.lastName || ''}!`;
     }
   </script>
 
