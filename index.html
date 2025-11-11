@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>AleStore</title>
+  <link rel="stylesheet" href="index.css">
 
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-E8GTDXF01V"></script>
   <script>
@@ -24,10 +25,16 @@
       localStorage.setItem("userSaldo", "0");
     }
 
-    window.location.href = "games.html";
+    setTimeout(() => {
+      window.location.href = "games.html";
+    }, 2000);
   </script>
 </head>
 <body>
+  <div class="splash">
+    <h1>Welcome to <strong>AleStore</strong></h1>
+    <p>Loading your games...</p>
+  </div>
   <script src="https://alestore-official.github.io/AleCAPTCHA/control.js"></script>
 </body>
 </html>
