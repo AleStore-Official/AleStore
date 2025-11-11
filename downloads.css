@@ -1,49 +1,64 @@
 body {
-  font-family: 'Arial', sans-serif;
-  background: linear-gradient(to bottom, #4CAF50, #007BFF);
-  color: white;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(to bottom right, #FFCCCB, #FFDAB9, #98FB98, #87CEEB);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 100vh;
   margin: 0;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+body.dark {
+  background: #1e1e1e;
+  color: #f0f0f0;
+}
+
+#themeToggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  font-size: 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
 }
 
 header {
-  background: #007BFF;
-  padding: 15px;
   text-align: center;
-  font-size: 1.5rem;
+  margin: 40px 0 20px;
 }
 
-button {
-  background: #FF5733;
-  color: white;
-  border: none;
-  padding: 10px;
-  border-radius: 5px;
-  cursor: pointer;
+header h1 {
+  color: #0047AB;
 }
 
-button:hover {
-  background: #C70039;
-}
-
-.download-item {
-  background: white;
-  padding: 15px;
-  border-radius: 5px;
+main {
   text-align: center;
-  margin: 10px auto;
-  width: 250px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  background-color: white;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 320px;
 }
 
-.download-item h3 {
-  color: #007BFF;
+body.dark main {
+  background-color: #2c2c2c;
+  color: #f0f0f0;
 }
 
-.download-item button {
-  background: #007BFF;
-  color: white;
-  border: none;
-  padding: 8px;
-  border-radius: 5px;
-  cursor: pointer;
+main h2 {
+  margin-bottom: 10px;
+}
+
+#downloads-list {
+  margin-top: 20px;
+  text-align: left;
+}
+
+footer {
+  margin-top: 40px;
+  font-size: 14px;
+  text-align: center;
 }
