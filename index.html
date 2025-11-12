@@ -97,7 +97,13 @@
 
   <script type="module">
     import { blockIfUnauthorized } from 'https://alestore-official.github.io/AleRegister/access.js';
-    const userauthorized = blockIfUnauthorized();
+
+    const verified = localStorage.getItem("access_verified") === "true";
+    const registered = localStorage.getItem("user_verified") === "true";
+
+    if (!verified || !registered) {
+      blockIfUnauthorized();
+    }
 
     if (!localStorage.getItem("userSaldo")) {
       localStorage.setItem("userSaldo", "0");
