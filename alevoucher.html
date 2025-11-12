@@ -33,7 +33,13 @@
 
   <script type="module">
     import { blockIfUnauthorized } from 'https://alestore-official.github.io/AleRegister/access.js';
-    const userauthorized = blockIfUnauthorized();
+
+    const verified = localStorage.getItem("access_verified") === "true";
+    const registered = localStorage.getItem("user_verified") === "true";
+
+    if (!verified || !registered) {
+      blockIfUnauthorized();
+    }
   </script>
 
   <script>
@@ -49,13 +55,6 @@
       localStorage.setItem("alevoucher-theme", theme);
       toggle.textContent = theme === "dark" ? "☀️" : "🌙";
     };
-  </script>
-
-  <script src="/AleStore/config.js"></script>
-  <script>
-    window.onload = function() {
-      checkUserBlock(1);
-    }
   </script>
 
   <script src="https://alestore-official.github.io/AleCAPTCHA/control.js"></script>
