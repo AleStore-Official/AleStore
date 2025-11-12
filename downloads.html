@@ -25,19 +25,7 @@
 
   <script type="module">
     import { blockIfUnauthorized } from 'https://alestore-official.github.io/AleRegister/access.js';
-    import { createClient } from 'https://esm.sh/@supabase/supabase-js';
-
-    blockIfUnauthorized();
-
-    const supabase = createClient(
-      'https://hsyyrcbibohwvbuwxwok.supabase.co',
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
-    );
-
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) {
-      location.href = "https://alestore-official.github.io/AleLogin";
-    }
+    const userauthorized = blockIfUnauthorized();
   </script>
 
   <script>
@@ -47,7 +35,6 @@
       document.body.classList.add("dark");
       toggle.textContent = "☀️";
     }
-
     toggle.onclick = () => {
       document.body.classList.toggle("dark");
       const theme = document.body.classList.contains("dark") ? "dark" : "light";
@@ -55,6 +42,14 @@
       toggle.textContent = theme === "dark" ? "☀️" : "🌙";
     };
   </script>
+
+  <script src="/AleStore/config.js"></script>
+  <script>
+    window.onload = function() {
+      checkUserBlock(1);
+    }
+  </script>
+
   <script src="https://alestore-official.github.io/AleCAPTCHA/control.js"></script>
 </body>
 </html>
