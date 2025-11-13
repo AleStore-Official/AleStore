@@ -45,7 +45,7 @@ document.getElementById("redeemForm").addEventListener("submit", function (e) {
     document.getElementById("voucher-code").value = "";
 
     setTimeout(() => {
-      window.location.href = "games.html";
+      window.location.href = "index.html";
     }, 2000);
   } else {
     message.textContent = "❌ Codice non valido o già utilizzato.";
@@ -69,7 +69,6 @@ function loadVouchers() {
 }
 
 function logout() {
-  localStorage.clear();
   window.location.href = "index.html";
 }
 
