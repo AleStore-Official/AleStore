@@ -1,4 +1,3 @@
-// 🔐 Codici AleVoucher validi (caricati da localStorage o inizializzati)
 let validVouchers = JSON.parse(localStorage.getItem("validVouchers")) || [
   "ABCD1234EFGH5678IJKL9012", "ZXCV0987BNML5432QWERT678", "PLMN4567OKIJ8321UJNH3456",
   "UIOP8765LKJH4321MNBV0987", "ASDF3456GHJK7890QWERT123", "YUIO9876MNBC6543XCVB3210",
@@ -20,20 +19,17 @@ let validVouchers = JSON.parse(localStorage.getItem("validVouchers")) || [
   "QAZX6543UIOP7890VBNM7654", "ZXCV5432TYUI8765QAZX9876", "GHJK7654PLMN8765ZXCV5432"
 ];
 
-// 🎯 Funzione per riscattare un codice AleVoucher
 document.getElementById("redeemForm").addEventListener("submit", function (e) {
   e.preventDefault();
   const code = document.getElementById("voucher-code").value.trim().toUpperCase();
   const message = document.getElementById("redeem-message");
 
-  // ✅ Validazione formato
   if (!/^[A-Z0-9]{24}$/.test(code)) {
     message.textContent = "Formato non valido. Inserisci 24 caratteri alfanumerici.";
     message.style.color = "red";
     return;
   }
 
-  // 🎁 Verifica e riscatto
   if (validVouchers.includes(code)) {
     let userSaldo = parseInt(localStorage.getItem("userSaldo"), 10);
     if (isNaN(userSaldo)) userSaldo = 0;
@@ -41,7 +37,6 @@ document.getElementById("redeemForm").addEventListener("submit", function (e) {
     userSaldo += 100;
     localStorage.setItem("userSaldo", userSaldo);
 
-    // 🔒 Rimuove il codice usato
     validVouchers = validVouchers.filter(v => v !== code);
     localStorage.setItem("validVouchers", JSON.stringify(validVouchers));
 
@@ -58,7 +53,6 @@ document.getElementById("redeemForm").addEventListener("submit", function (e) {
   }
 });
 
-// 🛡️ Funzione per mostrare i codici solo all'amministratore
 function loadVouchers() {
   const currentUser = localStorage.getItem("currentUser");
   if (currentUser === "Admin") {
@@ -74,11 +68,9 @@ function loadVouchers() {
   }
 }
 
-// 🚪 Funzione di logout
 function logout() {
   localStorage.clear();
-  window.location.href = "index.html"; // o "dashboard.html" se non usi login
+  window.location.href = "index.html";
 }
 
-// 🔄 Avvia caricamento codici se necessario
 loadVouchers();
