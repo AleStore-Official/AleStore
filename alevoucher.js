@@ -11,7 +11,7 @@ document.getElementById("redeemForm").addEventListener("submit", async (e) => {
   const message = document.getElementById("redeem-message");
 
   if (!/^[A-Z0-9]{24}$/.test(code)) {
-    message.textContent = "Invalid format. Enter 24 alphanumeric characters.";
+    message.textContent = "❌ Invalid format. Enter 24 alphanumeric characters.";
     message.style.color = "red";
     return;
   }
@@ -23,19 +23,19 @@ document.getElementById("redeemForm").addEventListener("submit", async (e) => {
     .single();
 
   if (error || !data) {
-    message.textContent = "Code not found.";
+    message.textContent = "❌ Code not found.";
     message.style.color = "red";
     return;
   }
 
   if (!data.enabled) {
-    message.textContent = "Code not enabled.";
+    message.textContent = "❌ Code not enabled.";
     message.style.color = "red";
     return;
   }
 
   if (data.used) {
-    message.textContent = "Code already used.";
+    message.textContent = "⚠️ Code already used.";
     message.style.color = "orange";
     return;
   }
@@ -50,7 +50,7 @@ document.getElementById("redeemForm").addEventListener("submit", async (e) => {
     .eq("code", code);
 
   if (updateError) {
-    message.textContent = "Error redeeming code.";
+    message.textContent = "❌ Error redeeming code.";
     message.style.color = "red";
     return;
   }
@@ -59,7 +59,7 @@ document.getElementById("redeemForm").addEventListener("submit", async (e) => {
   saldo += data.reward || 100;
   localStorage.setItem("userSaldo", saldo);
 
-  message.textContent = `Voucher redeemed! ${data.reward || 100} AleCoin added.`;
+  message.textContent = `✅ Voucher redeemed! ${data.reward || 100} AleCoin added.`;
   message.style.color = "green";
   document.getElementById("voucher-code").value = "";
 });
