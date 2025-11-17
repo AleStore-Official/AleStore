@@ -1,75 +1,42 @@
-let validVouchers = JSON.parse(localStorage.getItem("validVouchers")) || [
-  "ABCD1234EFGH5678IJKL9012", "ZXCV0987BNML5432QWERT678", "PLMN4567OKIJ8321UJNH3456",
-  "UIOP8765LKJH4321MNBV0987", "ASDF3456GHJK7890QWERT123", "YUIO9876MNBC6543XCVB3210",
-  "HJKL7654VBNM3210ASDF0987", "QWER5678ZXCV2345UIOP8765", "TYUI7890QWERT6543ASDF3456",
-  "ZXCV4567ASDF0987UIOP7654", "QAZX9876PLMN5432TYUI1234", "UIOP7654GHJK9870PLMN6543",
-  "ASDF2345ZXCV9876QWER4567", "VBNM8765TYUI5432QAZX0987", "QWERT6789GHJK4321ZXCV5678",
-  "UIOP5432QAZX9876VBNM6543", "TYUI7654ZXCV4321QWERT8765", "PLMN6543ASDF7890GHJK2345",
-  "ZXCV0987QAZX7654VBNM5432", "GHJK9876TYUI4321ASDF6543", "PLMN5432ZXCV8765QAZX7654",
-  "UIOP4321QWER9876GHJK6789", "ASDF7654QAZX5432VBNM0987", "QWERT8765UIOP2345ZXCV7654",
-  "TYUI6543VBNM7890GHJK4321", "ZXCV7654ASDF8765QWER5432", "PLMN2345TYUI6789QAZX9876",
-  "GHJK6543QWERT7654ZXCV8765", "UIOP7654ASDF7890VBNM6543", "QAZX8765TYUI5432PLMN7654",
-  "ZXCV7654QAZX8765QWERT6543", "GHJK7654ZXCV7890UIOP5432", "TYUI4321PLMN6543QAZX8765",
-  "QAZX6543VBNM9876ZXCV7654", "ASDF7890QWERT8765PLMN6543", "UIOP6543ZXCV5432QAZX9876",
-  "VBNM4321TYUI6543ZXCV9876", "GHJK8765PLMN5432QAZX9876", "QWERT7654ZXCV7890ASDF6543",
-  "UIOP9876QAZX5432VBNM8765", "ZXCV7654GHJK8765QAZX6543", "TYUI5432PLMN9876ZXCV7654",
-  "ASDF6543QAZX7654VBNM8765", "UIOP5432QWERT7654ZXCV9876", "GHJK7654PLMN5432QAZX9876",
-  "ZXCV4321TYUI6543VBNM7654", "ASDF8765QAZX9876PLMN5432", "QWERT6543ZXCV7654GHJK8765",
-  "UIOP5432VBNM9876QAZX8765", "TYUI7654PLMN6543ZXCV9876", "GHJK4321ZXCV8765QWERT7654",
-  "QAZX6543UIOP7890VBNM7654", "ZXCV5432TYUI8765QAZX9876", "GHJK7654PLMN8765ZXCV5432"
-];
+import { createClient } from 'https://esm.sh/@supabase/supabase-js';
 
-document.getElementById("redeemForm").addEventListener("submit", function (e) {
-  e.preventDefault();
-  const code = document.getElementById("voucher-code").value.trim().toUpperCase();
-  const message = document.getElementById("redeem-message");
+const supabase = createClient(
+  'https://hsyyrcbibohwvbuwxwok.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhzeXlyY2JpYm9od3ZidXd4d29rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjEwNjE0MDcsImV4cCI6MjA3NjYzNzQwN30.2KsFsGYjwf_cA7Z9oglVthiaE1_jWYuQ6HMMm5UXsyo'
+);
 
-  if (!/^[A-Z0-9]{24}$/.test(code)) {
-    message.textContent = "Formato non valido. Inserisci 24 caratteri alfanumerici.";
-    message.style.color = "red";
-    return;
+async function redeemVoucher(code, currentUser) {
+  const { data, error } = await supabase
+    .from("voucher_codes")
+    .select("enabled, used, reward")
+    .eq("code", code)
+    .single();
+
+  if (error || !data) {
+    return { success: false, message: "Code not found." };
   }
 
-  if (validVouchers.includes(code)) {
-    let userSaldo = parseInt(localStorage.getItem("userSaldo"), 10);
-    if (isNaN(userSaldo)) userSaldo = 0;
-
-    userSaldo += 100;
-    localStorage.setItem("userSaldo", userSaldo);
-
-    validVouchers = validVouchers.filter(v => v !== code);
-    localStorage.setItem("validVouchers", JSON.stringify(validVouchers));
-
-    message.textContent = "✅ Codice riscattato! 100 AleCoin aggiunti.";
-    message.style.color = "green";
-    document.getElementById("voucher-code").value = "";
-
-    setTimeout(() => {
-      window.location.href = "index.html";
-    }, 2000);
-  } else {
-    message.textContent = "❌ Codice non valido o già utilizzato.";
-    message.style.color = "red";
+  if (!data.enabled) {
+    return { success: false, message: "Code not enabled." };
   }
-});
 
-function loadVouchers() {
-  const currentUser = localStorage.getItem("currentUser");
-  if (currentUser === "Admin") {
-    const container = document.getElementById("voucher-container");
-    if (container) {
-      container.innerHTML = "";
-      validVouchers.forEach((code) => {
-        const li = document.createElement("li");
-        li.innerHTML = `🎫 Codice: <strong>${code}</strong>`;
-        container.appendChild(li);
-      });
-    }
+  if (data.used) {
+    return { success: false, message: "Code already used." };
   }
+
+  const { error: updateError } = await supabase
+    .from("voucher_codes")
+    .update({
+      used: true,
+      enabled: false,
+      user_id: currentUser,
+      redeemed_at: new Date().toISOString()
+    })
+    .eq("code", code);
+
+  if (updateError) {
+    return { success: false, message: "Error redeeming code." };
+  }
+
+  return { success: true, message: `Code redeemed! ${data.reward} AleCoin added.` };
 }
-
-function logout() {
-  window.location.href = "index.html";
-}
-
-loadVouchers();
