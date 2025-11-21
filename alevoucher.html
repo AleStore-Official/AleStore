@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Redeem AleVoucher</title>
   <link rel="stylesheet" href="alevoucher.css">
-  <script src="alevoucher.js" defer></script>
+  <script type="module" src="alevoucher.js"></script>
 </head>
 <body>
   <button id="themeToggle" title="Toggle theme">🌙</button>
@@ -33,10 +33,8 @@
 
   <script type="module">
     import { blockIfUnauthorized } from 'https://alestore-official.github.io/AleRegister/access.js';
-
     const verified = localStorage.getItem("access_verified") === "true";
     const registered = localStorage.getItem("user_verified") === "true";
-
     if (!verified || !registered) {
       blockIfUnauthorized();
     }
