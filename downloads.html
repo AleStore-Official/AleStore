@@ -25,18 +25,12 @@
 
   <script type="module">
     import { blockIfUnauthorized } from 'https://alestore-official.github.io/AleRegister/access.js';
-
-    const verified = localStorage.getItem("access_verified") === "true";
-    const registered = localStorage.getItem("user_verified") === "true";
-
-    if (!verified || !registered) {
-      blockIfUnauthorized();
-    }
+    blockIfUnauthorized();
   </script>
 
   <script>
     const toggle = document.getElementById("themeToggle");
-    const currentTheme = localStorage.getItem("aledownloads-theme");
+    const currentTheme = localStorage.getItem("alestore-theme");
     if (currentTheme === "dark") {
       document.body.classList.add("dark");
       toggle.textContent = "☀️";
@@ -44,7 +38,7 @@
     toggle.onclick = () => {
       document.body.classList.toggle("dark");
       const theme = document.body.classList.contains("dark") ? "dark" : "light";
-      localStorage.setItem("aledownloads-theme", theme);
+      localStorage.setItem("alestore-theme", theme);
       toggle.textContent = theme === "dark" ? "☀️" : "🌙";
     };
   </script>
